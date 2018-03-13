@@ -3,24 +3,16 @@ package main
 import (
   "fmt"
 	"strings"
-	"unicode"
   //"code.google.com/p/go-tour/wc"
 )
 
 func WordCount(s string) map[string]int {
-  words := strings.FieldsFunc(s, func(c rune) bool {
-    return !unicode.IsLetter(c) && !unicode.IsNumber(c)
-  })
+  words := strings.Fields(s)
   
-  mappings := make(map[string]int)
+  mappings := map[string]int{}
   
   for _, value := range words {
-    _, ok := mappings[value]
-    if ok {
-      mappings [value] += 1
-    } else {
-      mappings [value] = 1
-    }
+      mappings [value]++
   }
   
   return mappings

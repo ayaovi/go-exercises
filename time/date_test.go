@@ -41,3 +41,29 @@ func TestDate(t *testing.T) {
     t.Errorf("Date addition was incorrect, got: %d, want: %d.", *result, date3)
   }
 }
+
+func BenchmarkDate(b *testing.B) {
+	date1 := Date {
+    Day: 1,
+    Month: 1,
+    Year: 1,
+    Time: &Time {
+      Hour: 1,
+      Minute: 1,
+      Second: 1,
+    },
+  }
+	
+	date2 := Date {
+    Day: 1,
+    Month: 1,
+    Year: 1,
+    Time: &Time {
+      Hour: 1,
+      Minute: 1,
+      Second: 1,
+    },
+  }
+	
+	date1.Plus(&date2)
+}

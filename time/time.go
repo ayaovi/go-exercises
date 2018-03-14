@@ -39,3 +39,11 @@ func (t1 *Time) Plus(t2 * Time) *Date {
     },
   }
 }
+
+func (t1 *Time) Minus(t2 *Time) *Time {
+	return &Time {
+		Hour: t1.Hour - t2.Hour,
+		Minute: t1.Minute - t2.Minute,
+		Second: t1.Second - t2.Second,
+	}
+}

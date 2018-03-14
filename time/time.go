@@ -24,7 +24,7 @@ func (t1 *Time) Plus(t2 * Time) *Date {
   }
   
   if hour >= 24 {
-    second %= 24
+    hour %= 24
     day++
   }
   
@@ -41,9 +41,24 @@ func (t1 *Time) Plus(t2 * Time) *Date {
 }
 
 func (t1 *Time) Minus(t2 *Time) *Time {
-	return &Time {
+  t := Time {
 		Hour: t1.Hour - t2.Hour,
 		Minute: t1.Minute - t2.Minute,
 		Second: t1.Second - t2.Second,
 	}
+  r := 0
+  
+  if t1.Second < t2.Second {
+    t.Second = (t1.Second + 60) - t2.Second
+    r = -1
+  }
+  
+  if (t1.Minute + r) < t2.Minute {
+    t.Minute = (t1.Minute + r + 60) - t2.Minute
+    r = -1
+  }
+  
+  t.Hour += r
+  
+	return &t
 }

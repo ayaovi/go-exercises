@@ -1,14 +1,39 @@
 package datetime
 
-import ()
+import (
+	"fmt"
+)
 
 type Time struct {
   Hour, Minute, Second int
 }
 
-func (t1 *Time) Plus(t2 * Time) *Date {
-  // need to validate t1 and t2?
-  hour := t1.Hour + t2.Hour
+type TimeError struct {
+  Message string
+}
+
+func (te *TimeError) Error() string {
+	return te.Message
+}
+
+func (t *Time) Validate() (yn bool, err error) {
+	if (t.Hour < 0) || (t.Minute < 0) || (t.Second < 0) {
+		return false, &TimeError{ Message: fmt.Sprintf("invalid time %d.", *t) }
+	}
+	return true, &TimeError{ Message: "no errors." }
+}
+
+func (t1 *Time) Plus(t2 * Time) (result *Date, err error) {
+  // validate t1.
+	if yn, err := t1.Validate(); !yn {
+		return nil, err
+	}
+	// validate t2.
+	if yn, err := t2.Validate(); !yn {
+		return nil, err
+	}
+  
+	hour := t1.Hour + t2.Hour
   minute := t1.Minute + t2.Minute
   second := t1.Second + t2.Second
   day := 0
@@ -37,10 +62,19 @@ func (t1 *Time) Plus(t2 * Time) *Date {
       Minute: minute,
       Second: second,
     },
-  }
+  },
+	&TimeError { Message: "no error." }
 }
 
-func (t1 *Time) Minus(t2 *Time) *Time {
+func (t1 *Time) Minus(t2 *Time) (result *Time, err error) {
+	// validate t1.
+	if yn, err := t1.Validate(); !yn {
+		return nil, err
+	}
+	// validate t2.
+	if yn, err := t2.Validate(); !yn {
+		return nil, err
+	}
   t := Time {
 		Hour: t1.Hour - t2.Hour,
 		Minute: t1.Minute - t2.Minute,
@@ -60,5 +94,5 @@ func (t1 *Time) Minus(t2 *Time) *Time {
   
   t.Hour += r
   
-	return &t
+	return &t, &TimeError { Message: "no error." }
 }
